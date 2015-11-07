@@ -29,9 +29,7 @@ function [TrainMatrix, classification, precision] = acbrAlgorithm(TrainMatrix, t
         TrainMatrix = acbrRetentionPhase(TrainMatrix, current_instance);
     end
     
-    if real_classes ~= -1
+    if exist('true_classes','var') == 1
         precision = 100*correctly_classified_instances / num_instances_test;
-    else
-        precision = -1;
     end
 end

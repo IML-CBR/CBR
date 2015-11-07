@@ -1,6 +1,6 @@
 function TrainMatrix = acbrRetentionPhase(TrainMatrix, current_instance)
     % TODO!!!    
-    option = 2;
+    option = 1;
     if option == 1
         TrainMatrix = acbrAlwaysRetentionPhase(TrainMatrix, current_instance);
     elseif option == 2
