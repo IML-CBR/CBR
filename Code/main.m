@@ -7,4 +7,8 @@ percentage_train = 0.7;
  % stores the real class for every instance
 class_column = size(TrainMatrix,2);
 
-[NewTrainMatrix, classification, precision] = acbrAlgorithm(TrainMatrix ,TestMatrix, class_column);
+TrainMatrix_v1=CBmaintenanceV1(TrainMatrix);
+TrainMatrix_v2=CBmaintenanceV2(TrainMatrix);
+
+[NewTrainMatrix, classification, precision] = ...
+    acbrAlgorithm(TrainMatrix ,TestMatrix, class_column, 1, 2);

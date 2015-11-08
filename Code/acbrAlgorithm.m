@@ -1,4 +1,5 @@
-function [TrainMatrix, classification, precision] = acbrAlgorithm(TrainMatrix, test_data, real_classes)
+function [TrainMatrix, classification, precision] = ...
+            acbrAlgorithm(TrainMatrix, test_data, real_classes, forget_option, retention_option)
     K = 3;  % This value corresponds to the K in KNN
     num_instances_test = size(test_data,1);
     num_attributes = size(test_data,2);
@@ -25,8 +26,8 @@ function [TrainMatrix, classification, precision] = acbrAlgorithm(TrainMatrix, t
             end
         end
         
-        TrainMatrix = acbrReviewPhase(retrieved_cases, TrainMatrix, current_instance);
-        TrainMatrix = acbrRetentionPhase(TrainMatrix, current_instance);
+        TrainMatrix = acbrReviewPhase(retrieved_cases, TrainMatrix, current_instance, forget_option);
+        TrainMatrix = acbrRetentionPhase(TrainMatrix, current_instance, retention_option);
     end
     
     if real_classes ~= -1
