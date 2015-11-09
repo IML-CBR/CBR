@@ -8,6 +8,7 @@ function CM = acbrRetentionPhase(CM, current_instance, retrieved_cases, option)
         % TODO: Think another method
         CM = acbrAlwaysRetentionPhase(CM, current_instance, retrieved_cases);
     else
+		% Last else could be error case, to ensure good input values
         % TODO: Think another method
         CM = acbrAlwaysRetentionPhase(CM, current_instance, retrieved_cases);
     end

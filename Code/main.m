@@ -1,5 +1,7 @@
+
 datasets = {'adult' 'colic' 'hypothyroid'};
 dataset_name = datasets{3};
+
 
 K = 3;  % This value corresponds to the K in KNN
 forget_option = 1;

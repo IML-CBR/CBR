@@ -1,5 +1,6 @@
 function retrieved_indexes = acbrRetrievalPhase(CM,current_instance, K)
     % TODO!!!
+	% I understand KNN should be implemented
     retrieved_indexes = zeros(K,1);
     num_instances = size(CM.CB,1);
     for i=1:K
