@@ -8,6 +8,7 @@ function TrainMatrix = acbrRetentionPhase(TrainMatrix, current_instance, option)
         % TODO: Think another method
         TrainMatrix = acbrAlwaysRetentionPhase(TrainMatrix, current_instance);
     else
+		% Last else could be error case, to ensure good input values
         % TODO: Think another method
         TrainMatrix = acbrAlwaysRetentionPhase(TrainMatrix, current_instance);
     end
