@@ -1,9 +1,11 @@
-function [TrainMatrix, classification, precision] = ...
-            acbrAlgorithm(TrainMatrix, test_data, real_classes, forget_option, retention_option)
-    K = 3;  % This value corresponds to the K in KNN
-    num_instances_test = size(test_data,1);
-    num_attributes = size(test_data,2);
-    classification = zeros(num_instances_test,1); % This stores the classes decided for every test instance
+function [CM, classification, precision] = ...
+            acbrAlgorithm(CM, TestMatrix, real_classes, ...
+            forget_option, retention_option, K)
+    
+    
+    % This stores the classes decided for every test instance
+    num_instances_test = size(TestMatrix,1);
+    classification = zeros(num_instances_test,1); 
     
     % In case we know the true classes, this code stores them in
     % 'true_classes', and removes them from 'test_data'
@@ -12,22 +14,28 @@ function [TrainMatrix, classification, precision] = ...
     end
     
     for i = 1:num_instances_test
-        current_instance = test_data(i,:);
+        current_instance = TestMatrix(i,:);
         
-        retrieved_cases = acbrRetrievalPhase(TrainMatrix, current_instance, K);  % Here we get the K retrieved cases
-        choosen_class = acbrReusePhase(current_instance, retrieved_cases);      % Here we have the final class that is choosen
+        % Here we get the K retrieved indexes, and later the K retrieved
+        % cases to which these indexes correspond
+        retrieved_indexes = acbrRetrievalPhase(CM, current_instance, K);  
+        retrieved_cases = CM.CB(retrieved_indexes,:);
         
+        % Here we have the final class that is choosen
+        choosen_class = acbrReusePhase(current_instance, retrieved_cases);
         classification(i,1) = choosen_class;
         
-        if real_classes ~= -1 % In case we know the real class of each test instance
-            is_correctly_classified = acbrRevisionPhase(choosen_class, current_instance, TrainMatrix, test_data);  % We decide if it is correctly classified or not
+        % In case we know the real class of each test instance
+        if real_classes ~= -1 
+            is_correctly_classified = acbrRevisionPhase(choosen_class, current_instance, CM, TestMatrix);  % We decide if it is correctly classified or not
             if is_correctly_classified == 1
                 correctly_classified_instances = correctly_classified_instances + 1;    % If so, we count it as a correct instance
             end
         end
         
-        TrainMatrix = acbrReviewPhase(retrieved_cases, TrainMatrix, current_instance, forget_option);
-        TrainMatrix = acbrRetentionPhase(TrainMatrix, current_instance, retention_option);
+        CM = acbrReviewPhase(retrieved_indexes, CM, ...
+                                current_instance, choosen_class, forget_option);
+        CM = acbrRetentionPhase(CM, current_instance, retrieved_cases, retention_option);
     end
     
     if real_classes ~= -1

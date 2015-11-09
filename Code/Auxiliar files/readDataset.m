@@ -1,31 +1,18 @@
-function [TrainMatrix, TestMatrix] = readDataset(dataset_name, percentage_train)
+function [TrainMatrix, TestMatrix, class_names] = readDataset(dataset_name, i)
     tmp = matlab.desktop.editor.getActive;
     cd(fileparts(tmp.Filename));
 
     
-    filename = ['..\Datasets\' dataset_name '.arff'];
-    data = arffparser('read',filename);
+    filename_train = ...
+        ['..\Datasets\' dataset_name '\' dataset_name '.fold.00000' num2str(i) '.train.arff'];
     
-%     fprintf('Dataset read\n');
-%     
-%     field_names = fieldnames(data);
-%     
-%     % All class attributes are always the last attribute for the choosen
-%     % datsets
-%     class_name = field_names{length(field_names)}; %input('')};
-%     
-%     class=data.(class_name).values;
-%     class=replaceByNum(class);
-%     
-%     data = rmfield(data,class_name);
-%     at_list = fieldnames(data_orig);
-    data = arff2array(data);
+    TrainMatrix = parser_arff_file(filename_train);
     
-    [indexes_training, indexes_test] = getIndexesTrainAndTest(data, percentage_train);
-    TrainMatrix = data(indexes_training,:);
-    TrainMatrix(:,size(TrainMatrix,2))=...
-            num2cell(replaceByNum(TrainMatrix(:,size(TrainMatrix,2))));
-    TestMatrix = data(indexes_test,:);
-    TestMatrix(:,size(TestMatrix,2))=...
-            num2cell(replaceByNum(TestMatrix(:,size(TestMatrix,2))));
+    
+    filename_test = ...
+        ['..\Datasets\' dataset_name '\' dataset_name '.fold.00000' num2str(i) '.test.arff'];
+    
+    [TestMatrix, class_names] = parser_arff_file(filename_test);
+
+    
 end

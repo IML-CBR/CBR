@@ -1,3 +1,3 @@
-function TrainMatrix = acbrNoRetentionPhase(TrainMatrix, current_instance)
+function CM = acbrNoRetentionPhase(CM, current_instance, retrieved_cases)
     
 end

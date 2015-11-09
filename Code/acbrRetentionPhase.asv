@@ -1,0 +1,14 @@
+function TrainMatrix = acbrRetentionPhase(CM, current_instance, retrieved_cases, option)
+    % TODO!!!
+    if option == 1
+        TrainMatrix = acbrAlwaysRetentionPhase(CM, current_instance, retrieved_cases);
+    elseif option == 2
+        TrainMatrix = acbrNoRetentionPhase(CM, current_instance, retrieved_cases);
+    elseif option == 3
+        % TODO: Think another method
+        TrainMatrix = acbrAlwaysRetentionPhase(CM, current_instance, retrieved_cases);
+    else
+        % TODO: Think another method
+        TrainMatrix = acbrAlwaysRetentionPhase(CM, current_instance, retrieved_cases);
+    end
+end
