@@ -6,10 +6,11 @@ function CM = acbrRetentionPhase(CM, current_instance, retrieved_cases, option)
         CM = acbrNoRetentionPhase(CM, current_instance, retrieved_cases);
     elseif option == 3
         % TODO: Think another method
-        CM = acbrAlwaysRetentionPhase(CM, current_instance, retrieved_cases);
-    else
-		% Last else could be error case, to ensure good input values
+        CM = acbrRetentionX(CM, current_instance, retrieved_cases);
+    elseif option == 4
         % TODO: Think another method
-        CM = acbrAlwaysRetentionPhase(CM, current_instance, retrieved_cases);
+        CM = acbrRetentionY(CM, current_instance, retrieved_cases);
+	else
+		fprintf('ERROR: Option must be 1, 2, 3 or 4\n');
     end
 end
