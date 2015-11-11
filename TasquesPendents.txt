@@ -1,0 +1,14 @@
+Tasques pendents Lab2 IML			Assigned to
+-------------------------			-----------
+1) acbrRetentionX					
+2) acbrRetentionY					
+3) acbrRetreivalPhase				(1)
+3) acbrReusePhase					(2)
+4) acbrReviewPhase					(2)
+5) FriedmanValidation				(1)
+6) NemeyiValidation					(1)
+7) maintenanceAlgorithmX(CNN)		(1)
+8) maintenanceAlgorithmY(ACCM)		(2)
+9) OblivionByGoodness				
+10) GoodnessFunction				(2)
+11) KNN(for retreival)				(1)
