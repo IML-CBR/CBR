@@ -1,0 +1,7 @@
+function [ U ] = CNN(CB)
+    U = {};
+    rand_aux = rand;
+    random = floor(rand_aux*(num_instances)+1);
+    
+end
+
