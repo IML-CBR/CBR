@@ -129,7 +129,7 @@ function out = arffparser(mode, fileName, normalize, inputStruct, relationName, 
         if nargin < 2
             error('ERROR:ARFFPARSER', 'Too few input arguments');
         elseif nargin == 2
-            normalize = 0; %default will be do not normalize
+            normalize = 1; %default will be normalize
         elseif nargin > 3
             warning('WARNING:ARFFPARSER',...
                 'Extra arguments will be ommited');
