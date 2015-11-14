@@ -1,34 +1,32 @@
-function [ U ] = CNN(CB, labels)
-    U = {};
-    
-    
-%     retrieved_indexes = zeros(K,1);
-    
-    i = 1;
-    additions = 0;
-    while(size(1,CB)>0)
-        max_instances = size(CB,1);
-        rand_aux = rand;
-        random = floor(rand_aux*(max_instances)+1);
-        x = CB(random);
-        [z, index] = KNN(CB,x,1);
-        if isnumeric(labels(index))
-            if labels(index)~=labels(random)
-                U(size(U,1)) = x;
+function [ U_CaseBase, U_labels ] = CNN(CB, labels)
+    U_CaseBase = [];
+    U_labels = [];
+    order = (1:length(CB));
+    Repeat = 1;
+    while(Repeat)
+        Repeat = 0;
+        rand_order = order(randperm(length(order)));
+        for i=1:1:length(rand_order)
+            x_case = CB(rand_order(i),:);
+            y_label = labels(rand_order(i));
+            [z_case, z_index] = KNN(U_CaseBase,CB(rand_order(i)),1);
+            z_label = U_labels(z_index);
+            if isempty(z_case)
+                U_CaseBase(length(U_CaseBase)+1) = x_case;
+                U_labels(length(U_CaseBase)+1) = y_label;
+                Repeat = 1;
+            elseif isnumeric(y_label)
+                if y_label ~= z_label
+                    U_CaseBase(length(U_CaseBase)+1) = x_case;
+                    U_labels(length(U_CaseBase)+1) = y_label;
+                    Repeat = 1;
+                end
+            elseif ~strcmp(y_label, z_label)
+                U_CaseBase(length(U_CaseBase)+1) = x_case;
+                U_labels(length(U_CaseBase)+1) = y_label;
+                Repeat = 1;
             end
-        elseif ~strcmp(labels(index),labels(rand))
-            U(size(U,1)) = x;
         end
-        
-        
-%         (i <= max_instances) && 
-%     for i=1:K
-%         random = floor(rand*(num_instances-1)+1);
-%         while (any(retrieved_indexes==random))
-%             rand_aux = rand;
-%             random = floor(rand_aux*(num_instances)+1);
-%         end
-%         retrieved_indexes(i,1) = random;
     end
 end
 

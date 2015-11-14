@@ -9,7 +9,7 @@ Tasques pendents Lab2 IML					Assigned to
 4) acbrReviewPhase								xavi	(pseodocodi en el paper pag 232, crec recordar)
 5) FriedmanValidation							juli
 6) NemeyiValidation								juli
-7) maintenanceAlgorithmX(CNN)					juli	
+7) maintenanceAlgorithmX(CNN)					DONE	
 8) maintenanceAlgorithmY(CCN o RNN o SNN o ENN)	xavi	(la maria diu que qualsevol esta bé)
 9) OblivionByGoodness				
 10) GoodnessFunction							xavi	(hi ha informacio en el paper, en la pagina on s'explica el review, en els paragrafs 
