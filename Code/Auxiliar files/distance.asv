@@ -1,0 +1,11 @@
+function [ distValue ] = distance(c)
+(vx-vy)^2
+
+
+end
+function dist = distance(x,y,r)
+    dist = sum((abs(x-y)).^r);
+    dist = nthroot(dist, r);
+    D  = sqrt(sum((G - G2) .^ 2));
+end
+

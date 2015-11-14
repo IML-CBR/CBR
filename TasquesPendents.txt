@@ -1,5 +1,5 @@
-Tasques pendents Lab2 IML			Assigned to
--------------------------			-----------
+Tasques pendents Lab2 IML					Assigned to
+-------------------------					-----------
 1) acbrRetentionX(DD)									(la maria diu que dacord)
 2) acbrRetentionY(MG)									(la maria diu que dacord)
 3) acbrRetreivalPhase							juli	(afegir KNN al codi)
