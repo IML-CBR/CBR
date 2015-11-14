@@ -1,0 +1,10 @@
+function [ Kbase ] = KNN(c_new,CB,k)
+    distances = zeros(1,size(CB,1));
+    for i=1:1:size(CB,1)
+        distances(i) = distance(c_new, CB(i,:));
+    end
+    % order the data in ascendent x ascendent order
+    [original_x, order] = sort(original_x, 'descend');       %# sort cols low to high
+    y = y(order);
+end
+
