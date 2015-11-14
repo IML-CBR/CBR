@@ -1,4 +1,4 @@
-function retrieved_indexes = acbrRetrievalPhase(TrainMatrix,c_new, k_size)
+function retrieved_indexes = acbrRetrievalPhase(TrainMatrix,c_new, k)
     % TODO!!!
 	% I understand KNN should be implemented
 %     retrieved_indexes = zeros(K,1);
@@ -11,6 +11,6 @@ function retrieved_indexes = acbrRetrievalPhase(TrainMatrix,c_new, k_size)
 %         end
 %         retrieved_indexes(i,1) = random;
 %     end
-    retrieved_indexes = KNN(TrainMatrix, c_new, k_size);
+    retrieved_indexes = KNN(TrainMatrix,c_new, k)
 %      retrieved_cases = TrainMatrix(retrieved_indexes,:);
 end

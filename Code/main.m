@@ -1,6 +1,7 @@
 %%
 clear all;
 close all;
+%%
 datasets = {'adult' 'colic' 'hypothyroid'};
 dataset_name = datasets{3};
 
@@ -10,7 +11,7 @@ forget_option = 1; %seria potser millor utilitzar strings per comprencio
 retention_option = 2; %idem
 %%
 % for i=0:9
-i=0;
+ i=0;
     [TrainMatrix, TestMatrix, class_names] = readDataset(dataset_name,i);
 %%    
      % This parameter indicates that the first column of the test matrix

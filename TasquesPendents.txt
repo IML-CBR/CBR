@@ -2,7 +2,7 @@ Tasques pendents Lab2 IML					Assigned to
 -------------------------					-----------
 1) acbrRetentionX(DD)									(la maria diu que dacord)
 2) acbrRetentionY(MG)									(la maria diu que dacord)
-3) acbrRetreivalPhase							juli	(afegir KNN al codi)
+3) acbrRetreivalPhase							DONE	(afegir KNN al codi)
 3) acbrReusePhase								xavi	(funcio senzilla que pren per opcio bona el resultat d'una votacio dels k retrived, 
 														o tambe es podia fer prenent el mes semblant, pero llavors no te sentit retornar k, 
 														per tant fem votacio)
@@ -19,4 +19,4 @@ Tasques pendents Lab2 IML					Assigned to
 														es un CB) -> crec que prendra una array de casos i el CB contra el que es compara,
 														pero no n'estic segur, ho podem mirar, o si ho veus clar, ja m'ho explicaras que tal
 														(en cas que fos mes complicat del que em valorat, ho subdividim)
-11) KNN(for retreival)							juli	
+11) KNN(for retreival)							DONE	
