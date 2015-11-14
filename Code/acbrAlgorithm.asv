@@ -1,12 +1,10 @@
-function [CM, classification, precision] = ...
-            acbrAlgorithm(CM, TestMatrix, real_classes, forget_option, retention_option)
-    K = 3;  % This value corresponds to the K in KNN
+function [CB, classification, precision] = ...
+            acbrAlgorithm(CM, TestMatrix, real_classes, ...
+            forget_option, retention_option, K)
     
-    num_instances_train = size(CM,1);
-    num_instances_test = size(TestMatrix,1);
-    num_attributes = size(TestMatrix,2);
     
     % This stores the classes decided for every test instance
+    num_instances_test = size(TestMatrix,1);
     classification = zeros(num_instances_test,1); 
     
     % In case we know the true classes, this code stores them in
@@ -20,12 +18,11 @@ function [CM, classification, precision] = ...
         
         % Here we get the K retrieved indexes, and later the K retrieved
         % cases to which these indexes correspond
-        retrieved_indexes = acbrRetrievalPhase(CM, current_instance, K);  
-        retrieved_cases = CM.CB(retrieved_indexes,:);
+        retrieved_cases = acbrRetrievalPhase(CM, current_instance, K);  
+%         retrieved_cases = CM.CB(retrieved_indexes,:);
         
         % Here we have the final class that is choosen
         choosen_class = acbrReusePhase(current_instance, retrieved_cases);
-        
         classification(i,1) = choosen_class;
         
         % In case we know the real class of each test instance

@@ -22,7 +22,7 @@ function data_parsed = arff2array(data)
 			columnTot = sum(prov_attribute);
 			colMean = columnTot / howMany;
 			if isnan(colMean)
-				data_parsed(:,i)=[];
+				data_parsed(:,i)=NaN;
 			else
 				prov_attribute(find(notNaN==0))=colMean;
 				data_parsed(:,i) = num2cell(prov_attribute');

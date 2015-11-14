@@ -10,8 +10,8 @@ K = 3;  % This value corresponds to the K in KNN, and to the CB size in the retr
 forget_option = 1; %seria potser millor utilitzar strings per comprencio
 retention_option = 2; %idem
 %%
-% for i=0:9
- i=0;
+for i=0:9
+% i=0;
     [TrainMatrix, TestMatrix, class_names] = readDataset(dataset_name,i);
 %%    
      % This parameter indicates that the first column of the test matrix
@@ -33,4 +33,4 @@ retention_option = 2; %idem
         acbrAlgorithm(CM ,TestMatrix, class_column, ...
         forget_option, retention_option, K);
     fprintf('Precision: %f\n',precision);
-% end
+end
