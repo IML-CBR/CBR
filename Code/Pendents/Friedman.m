@@ -1,5 +1,6 @@
-function goodnessValue = goodness(c,CB)
+function [ FriedmanResult ] = Friedman(c, CB)
     % TODO!!!
-    
-    goodnessValue = 1;
+%     friedman
+myFriedman
+    FriedmanResult = 1;
 end

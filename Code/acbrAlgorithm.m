@@ -14,7 +14,8 @@ function [CM, classification, precision] = ...
     end
     
     for i = 1:num_instances_test
-        current_instance = TestMatrix(i,:);
+        current_instance = TestMatrix(i,1:size(TestMatrix,2)-1);
+        current_label = TestMatrix(i,size(TestMatrix,2)-1:end);
         
         % Here we get the K retrieved indexes, and later the K retrieved
         % cases to which these indexes correspond
