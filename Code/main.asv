@@ -1,4 +1,11 @@
-data = load('diabetes');
+%% Reset all
+clear all;
+close all;
+%% Move to working directory
+tmp = matlab.desktop.editor.getActive;
+cd(fileparts(tmp.Filename));
+%% Load Data
+data = load('../Data/diabetes');
 x = data.x;
 y = data.y;
 
@@ -8,6 +15,8 @@ dimensionality = size(x,1);
 means = mean(x,2);
 
 %% QUESTION 2 - JULIÀ
+data1 = struct('x',replaceNaNbyMean(x),'y',y);
+;
 
 
 %% QUESTION 3 - XAVI
