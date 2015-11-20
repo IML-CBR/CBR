@@ -16,13 +16,13 @@ means = mean(x,2);
 
 %% QUESTION 2 - JULIÀ
 %D1
-data1 = struct('x',replaceNaNbyMean(x),'y',y);
+D1 = struct('x',replaceNaNbyMean(x),'y',y);
 %D2
-data2 = struct('x',replaceNaNbyMeanOfClass(x,y),'y',y);
+D2 = struct('x',replaceNaNbyMeanOfClass(x,y),'y',y);
 
 %Means
-means1 = mean(data1.x,2);
-means2 = mean(data2.x,2);
+means1 = mean(D1.x,2);
+means2 = mean(D2.x,2);
 
 %% QUESTION 3 - XAVI
 x_v2 = [ones(1,num_instances);x(7:8,:)];
@@ -43,16 +43,31 @@ data = load('../Data/diabetes');
 x = data.x;
 y = data.y;
 %b)
-data2 = struct('x',replaceNaNbyMeanOfClass(x,y),'y',y);
+D2 = struct('x',replaceNaNbyMeanOfClass(x,y),'y',y);
 %c)
 sizeTrain = ceil(4 * size(data.x,2)/5);
 sizeTest = size(data.x,2)-sizeTrain;
 
-data2train = struct('x',data2.x(:,1:sizeTrain),'y',data2.y(:,1:sizeTrain));
+data2train = struct('x',D2.x(:,1:sizeTrain),'y',D2.y(1:sizeTrain,:));
+data2test = struct('x',D2.x(:,sizeTrain+1:end),'y',D2.y(sizeTrain+1:end,:));
 
-%d
+%d)
+x_v3 = [ones(1,sizeTrain);data2train.x];
+x_v4 = [ones(1,sizeTest);data2test.x];
+w = analyticLinearRegression(x_v3,(data2train.y));
 
-%e
+%e)
+% Train
+pred_y_train = double((x_v3'*w)>0);
+pred_y_train(find(pred_y_train==0))=-1;
+
+differences_train = find(pred_y_train~=data2train.y);
+% Test
+pred_y_test = double((x_v4'*w)>0);
+pred_y_test(find(pred_y_test==0))=-1;
+
+differences_test = find(pred_y_test~=data2test.y);
+
 
 %% QUESTION 5 - JULIÀ
 
