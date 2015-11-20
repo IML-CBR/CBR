@@ -1,7 +1,7 @@
-function [ data_parsed ] = replaceNaNbyMeanOfClass( X, Y )
-
-% Add the value for each instance
-	data_parsed = X;
+function [ X_parsed ] = replaceNaNbyMeanOfClass( X, Y )
+	% Replace the NaN values by the mean of the values of the other
+	% instances of the same class
+    X_parsed = X;
     classes = unique(Y);
     for i=1:1:size(X,1)
         prov_attribute = X(i,:);
@@ -10,22 +10,19 @@ function [ data_parsed ] = replaceNaNbyMeanOfClass( X, Y )
             if isnumeric(prov_attribute)
                 notNaN = (intersect(instancesfromClass,find(~isnan(prov_attribute))))';
                 yesNaN = (intersect(instancesfromClass,find(isnan(prov_attribute))))';
-%                 prov_attribute(yesNaN) = 0;
-                howMany = size(notNaN,2);
-                columnTot = sum(prov_attribute(notNaN));
-                colMean = columnTot / howMany;
+                colMean = mean(prov_attribute(notNaN));
                 if isnan(colMean)
-                    data_parsed(i,instancesfromClass)=[];
+                    prov_attribute(yesNaN)=[];
                 else
                     prov_attribute(yesNaN)=colMean;
                 end
-
             else
-                data_parsed(:,i) = prov_attribute';
+                error('IN:replaceNaNbyMeanOfClassTrain',...
+                    ['Error. \nThere are non numeric values in the'...
+                    ' evaluated dataset.']);
             end
         end
-        data_parsed(i,:) = prov_attribute;
+        X_parsed(i,:) = prov_attribute;
     end
-
 end
 

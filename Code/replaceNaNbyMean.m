@@ -1,5 +1,7 @@
-function [ data_parsed ] = replaceNaNbyMean( X )
-% Add the value for each instance
+function [ X_parsed ] = replaceNaNbyMean( X )
+    % Replace the NaN values by the mean of the values of the other
+	% values that takes the attribut in the other instances of the dataset
+    
     for i=1:1:size(X,1)
         prov_attribute = X(i,:);
         if isnumeric(prov_attribute)
@@ -9,14 +11,13 @@ function [ data_parsed ] = replaceNaNbyMean( X )
 			columnTot = sum(prov_attribute);
 			colMean = columnTot / howMany;
 			if isnan(colMean)
-				data_parsed(i,:)=[];
+				X_parsed(i,:)=[];
 			else
 				prov_attribute(find(notNaN==0))=colMean;
-				data_parsed(i,:) = prov_attribute;
-			end
-			
+				X_parsed(i,:) = prov_attribute;
+            end
         else
-            %data_parsed(:,i) = prov_attribute';
+            X_parsed(i,:) = prov_attribute'
         end
     end
 
