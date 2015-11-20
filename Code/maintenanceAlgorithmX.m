@@ -1,7 +1,6 @@
-function NewTrainMatrix=maintenanceAlgorithmX(TrainMatrix)
-    num_instances_train = size(TrainMatrix,1);
-    num_instances_select = floor(0.7*num_instances_train);
-    selected_indexes = randperm(num_instances_train, num_instances_select);
-    
-    NewTrainMatrix = TrainMatrix(selected_indexes,:);
+function [ ReducedCaseBase, ReducedLabels ] = maintenanceAlgorithmX(TrainMatrix)
+    % Call CNN function
+    TrainCases=TrainMatrix(:,1:size(TrainMatrix,2)-1);
+    TrainLabels=TrainMatrix(:,size(TrainMatrix,2)-1:end);
+    [ ReducedCaseBase, ReducedLabels ] = CNN(TrainCases, TrainLabels);
 end

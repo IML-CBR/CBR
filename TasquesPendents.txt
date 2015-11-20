@@ -1,0 +1,22 @@
+Tasques pendents Lab2 IML					Assigned to
+-------------------------					-----------
+1) acbrRetentionX(DD)									(la maria diu que dacord)
+2) acbrRetentionY(MG)									(la maria diu que dacord)
+3) acbrRetreivalPhase							DONE	(afegir KNN al codi)
+3) acbrReusePhase								xavi	(funcio senzilla que pren per opcio bona el resultat d'una votacio dels k retrived, 
+														o tambe es podia fer prenent el mes semblant, pero llavors no te sentit retornar k, 
+														per tant fem votacio)
+4) acbrReviewPhase								xavi	(pseodocodi en el paper pag 232, crec recordar)
+5) FriedmanValidation							juli
+6) NemeyiValidation								juli
+7) maintenanceAlgorithmX(CNN)					DONE	
+8) maintenanceAlgorithmY(CCN o RNN o SNN o ENN)	xavi	(la maria diu que qualsevol esta bé)
+9) OblivionByGoodness				
+10) GoodnessFunction							xavi	(hi ha informacio en el paper, en la pagina on s'explica el review, en els paragrafs 
+														superiors, cal poder evaluar el goodness dun cas i tambe dun CB senser ... 
+														no ho he acabat d'entendre si serien dues funcions diferents o si sempre pren 
+														n casos, i el cas dun case es el cas trivial de evaluar per un cj, i amb n casos, 
+														es un CB) -> crec que prendra una array de casos i el CB contra el que es compara,
+														pero no n'estic segur, ho podem mirar, o si ho veus clar, ja m'ho explicaras que tal
+														(en cas que fos mes complicat del que em valorat, ho subdividim)
+11) KNN(for retreival)							DONE	

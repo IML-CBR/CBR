@@ -129,7 +129,7 @@ function out = arffparser(mode, fileName, normalize, inputStruct, relationName, 
         if nargin < 2
             error('ERROR:ARFFPARSER', 'Too few input arguments');
         elseif nargin == 2
-            normalize = 1;
+            normalize = 1; %default will be normalize
         elseif nargin > 3
             warning('WARNING:ARFFPARSER',...
                 'Extra arguments will be ommited');
@@ -806,6 +806,7 @@ function out = arffparser(mode, fileName, normalize, inputStruct, relationName, 
         out = 1;
     end
     
+    %Normalize part of the code
     if normalize == 1
         fnames = fieldnames(out); 
         for field_index = 1:numel(fnames)
