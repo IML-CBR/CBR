@@ -1,3 +1,3 @@
-function CM = acbrNoRetentionPhase(CM, current_instance, retrieved_cases)
+function CM = acbrNoRetentionPhase(CM, current_instance, retrieved_indexes)
     
 end
