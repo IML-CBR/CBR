@@ -1,3 +1,7 @@
+%% Reset variables
+clear all;
+clc;
+%% Load data
 datasets = {'adult' 'colic' 'hypothyroid'};
 dataset_name = datasets{3};
 
@@ -7,8 +11,9 @@ forget_option = 0; %seria potser millor utilitzar strings per comprencio
 retention_option = 3; %idem
 
 tic
-for i=0:9
-%     [TrainMatrix, TestMatrix, class_names] = readDataset(dataset_name,i);
+% for i=0:9
+i=0;
+    [TrainMatrix, TestMatrix, class_names] = readDataset(dataset_name,i);
 
 
 %%    
@@ -34,5 +39,5 @@ for i=0:9
                         acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
                         forget_option, retention_option, K);
     fprintf('Precision: %f\n',precision);
-end
+% end
 toc

@@ -1,5 +1,7 @@
 function [Kbase, K_indexes, K_distances] = KNN(CB, c_new, k)
-    CB_attributes = CB(:,1:size(CB,2)-1);  
+    if ~(isempty(CB) || isempty(c_new) || k=0)
+    CB_attributes = CB(:,1:size(CB,2)-1);
+    CB_labels = CB(:,size(CB,2));
     c_new = c_new(1:size(c_new,2)-1);
     
     if isempty(CB_attributes) || isempty(c_new) || (k == 0)
@@ -7,7 +9,6 @@ function [Kbase, K_indexes, K_distances] = KNN(CB, c_new, k)
         K_indexes = [];
         K_distances = [];
     else
-        CB_labels = CB(:,size(CB,2));
         distances = zeros(1,size(CB_attributes,1));
         for i=1:size(CB_attributes,1)
             distances(i) = caseDistance(c_new, CB_attributes(i,:));
