@@ -19,8 +19,8 @@ for i=0:9
     
     %%
     % TODO: falta dividir el train matrix entre atributs i labels
-    [ TrainMatrix_v1, Labels_v1 ] = CNN(TrainMatrix);%,TrainLabels);
-    TrainMatrix_v2=RNN(TrainMatrix_v1, 1);
+%     [ TrainMatrix_v1, Labels_v1 ] = CNN(TrainMatrix);%,TrainLabels);
+    TrainMatrix_v2=RNN(TrainMatrix, 1);
 
     num_instances_train = size(TrainMatrix,1);
     
