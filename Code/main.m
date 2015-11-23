@@ -1,7 +1,11 @@
 %% Reset variables
 clear all;
+close all;
 clc;
-%% Load data
+%% Move to working directory
+tmp = matlab.desktop.editor.getActive;
+cd(fileparts(tmp.Filename));
+
 datasets = {'adult' 'colic' 'hypothyroid'};
 dataset_name = datasets{3};
 
@@ -11,8 +15,8 @@ forget_option = 0; %seria potser millor utilitzar strings per comprencio
 retention_option = 3; %idem
 
 tic
-% for i=0:9
-i=0;
+for i=0:9
+    %% Load data
     [TrainMatrix, TestMatrix, class_names] = readDataset(dataset_name,i);
 
 
@@ -22,10 +26,12 @@ i=0;
     use_real_classes = 1;
 
     
-    %%
+    %% CNN
     % TODO: falta dividir el train matrix entre atributs i labels
-%     [ TrainMatrix_v1, Labels_v1 ] = CNN(TrainMatrix);%,TrainLabels);
-    TrainMatrix_v2=RNN(TrainMatrix, 1);
+    [ TrainMatrix_v1, Labels_v1 ] = CNN(TrainMatrix);%,TrainLabels);
+    
+    %% RNN
+    TrainMatrix_v2=RNN(TrainMatrix_v1, 1);
 
     num_instances_train = size(TrainMatrix,1);
     
@@ -33,11 +39,14 @@ i=0;
     % current goodness
     initial_goodness = zeros(num_instances_train, 1)+0.5;
     current_goodness = zeros(num_instances_train, 1)+0.5;
-    
+   
     CM = struct('CB',{TrainMatrix},'GB0',initial_goodness,'GB',current_goodness);
+   
     [NewCM, classification, precision] = ...
                         acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
                         forget_option, retention_option, K);
+                    
     fprintf('Precision: %f\n',precision);
-% end
+    
+end
 toc
