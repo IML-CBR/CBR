@@ -35,6 +35,5 @@ function [ U_CaseBase, U_labels ] = CNN(TrainMatrix)
             end
         end
         CB(storedCases,:) = [];
-        Repeat
     end
 end

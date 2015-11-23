@@ -1,6 +1,6 @@
 function [TrainMatrix, TestMatrix, class_names] = readDataset(dataset_name, i)
-    tmp = matlab.desktop.editor.getActive;
-    cd(fileparts(tmp.Filename));
+%     tmp = matlab.desktop.editor.getActive;
+%     cd(fileparts(tmp.Filename));
 
     
     filename_train = ...
