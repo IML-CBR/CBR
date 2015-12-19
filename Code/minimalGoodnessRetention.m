@@ -1,4 +1,7 @@
 function CM = minimalGoodnessRetention(current_instance,retrieved_indexes,CM)
+    if max(retrieved_indexes) > size(CM.CB,1)
+        a=1;
+    end
     K = CM.CB(retrieved_indexes,:);
     MC = mode(cell2mat(K(:,size(K,2))));
     MK = retrieved_indexes(cell2mat(K(:,size(K,2)))==MC);

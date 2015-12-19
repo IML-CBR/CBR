@@ -1,7 +1,7 @@
 function [ U_CaseBase, U_labels ] = CNN(TrainMatrix)
     % Call CNN function
     CB=TrainMatrix(:,1:size(TrainMatrix,2)-1);
-    labels=TrainMatrix(:,size(TrainMatrix,2)-1:end);
+    labels=TrainMatrix(:,end);
     U_CaseBase = [];
     U_labels = [];
     Repeat = 1;

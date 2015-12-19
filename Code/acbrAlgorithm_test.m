@@ -1,5 +1,5 @@
-function [CM, classification, precision] = ...
-            acbrAlgorithm(CM, TestMatrix, real_classes, ...
+function [time_retr,time_reuse,time_review,time_retention, precision] = ...
+            acbrAlgorithm_test(CM, TestMatrix, real_classes, ...
             forget_option, retention_option, K)
 % acbrAlgorithm This function classifies all instances in TestMatrix
 %               using an ACBR.
@@ -29,7 +29,10 @@ function [CM, classification, precision] = ...
 %                                 been set to 1)
 %   	- K: It indicates the 'k' parameter to be used in the K-NN method
             
-    
+    time_retr=0;
+    time_reuse=0;
+    time_review=0;
+    time_retention=0;
     % This stores the classes decided for every test instance
     num_instances_test = size(TestMatrix,1);
     classification = zeros(num_instances_test,1); 
@@ -46,14 +49,16 @@ function [CM, classification, precision] = ...
         
         % Here we get the K retrieved indexes, and later the K retrieved
         % cases to which these indexes correspond
+        tic
         [retrieved_cases, retrieved_indexes] = acbrRetrievalPhase(CM.CB, current_instance, K);  
-        if (max(retrieved_indexes) > 160)
-            a = 1;
-        end
+        time_retr=time_retr+toc;
+
         %         retrieved_cases = CM.CB(retrieved_indexes,:);
         
         % Here we have the final class that is choosen
+        tic
         choosen_class = acbrReusePhase(current_instance, retrieved_cases);
+        time_reuse = time_reuse+toc;
         classification(i,1) = choosen_class;
         
         % In case we know the real class of each test instance
@@ -64,12 +69,19 @@ function [CM, classification, precision] = ...
                 correctly_classified_instances = correctly_classified_instances + 1;    % If so, we count it as a correct instance
             end
         end
-        if max(retrieved_indexes) > size(CM.CB,1)
-            a=1;
-        end
+        
+%         if (max(retrieved_indexes) == 162)
+%             a = 1;
+%         end
+
+        tic
         [CM, retrieved_indexes] = acbrReviewPhase(retrieved_indexes, CM, ...
                                 current_instance, choosen_class, forget_option);
+        time_review=time_review+toc;
+        tic
+
         CM = acbrRetentionPhase(CM, current_instance, retrieved_indexes, retention_option, choosen_class);
+        time_retention=time_retention+toc;
     end
     
     if real_classes ~= -1
