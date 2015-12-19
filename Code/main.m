@@ -7,7 +7,7 @@
 % cd(fileparts(tmp.Filename));
 % 
 % 
-datasets = {'adult' 'colic' 'hypothyroid' 'colic'};
+datasets = {'adult' 'colic' 'hypothyroid' 'autos' 'colic'};
 dataset_name = datasets{4};
 
 K = 3;  					% This value corresponds to the K in KNN, and to the CB size in the retreival fase

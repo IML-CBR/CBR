@@ -33,19 +33,13 @@ function data_parsed = arff2array(data)
             are_nan = cellfun(@(x) isempty(x), prov_attribute, 'UniformOutput',false);
             are_nan = cell2mat(are_nan);
             not_nan = prov_attribute(~are_nan);
-            nan_values = prov_attribute(are_nan);
             not_nan_classes = classes(~are_nan);
             nan_classes = classes(are_nan);
-            
-            for j = 1:size(nan_values,2)
-                nan_class = nan_classes(j);
-                aux = not_nan(not_nan_classes==nan_class);
-                [unique_strings, ~, string_map]=unique(aux);
-                nan_values(j) = unique_strings(mode(string_map));
-            end
-            
-            data_parsed(are_nan,i) = nan_values;
-            data_parsed(~are_nan,i) = not_nan';
+            aux = not_nan(not_nan_classes==nan_classes);
+            [unique_strings, ~, string_map]=unique(aux);
+            replacements = unique_strings(mode(string_map));
+            data_parsed(are_nan,i) = replacements;
+            data_parsed(:,i) = prov_attribute';
         end
     end
     if isnumeric(classes)
