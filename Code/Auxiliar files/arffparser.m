@@ -256,6 +256,18 @@ function out = arffparser(mode, fileName, normalize, inputStruct, relationName, 
                 indxEnd = length('date') + 1;
                 indxStart = length('@attribute ') + 1;
                 
+            elseif strcmp(endingLetter, ']')
+                nameStr = 'numeric';
+                 % Assing values, treating real as numeric
+                theKind = 'numeric';
+                strKind = 'numeric';
+                
+                % Assign indices
+                indxEnd = 13;
+                indxStart = length('@attribute') + 1;
+                
+                % Clear unwanted variables
+                clear nameStr;
             else
                 
                 q = 'No appropriate kind of attribute';

@@ -5,10 +5,10 @@
 % %% Move to working directory
 % tmp = matlab.desktop.editor.getActive;
 % cd(fileparts(tmp.Filename));
-% 
-% 
-datasets = {'adult' 'colic' 'hypothyroid' 'autos' 'colic'};
-dataset_name = datasets{4};
+
+
+datasets = {'adult' 'colic' 'hypothyroid' 'credit-a' 'bal'};
+dataset_name = datasets{5};
 
 K = 3;  					% This value corresponds to the K in KNN, and to the CB size in the retreival fase
 forget_option = 0; 			%seria potser millor utilitzar strings per comprencio
@@ -71,15 +71,16 @@ for K = 5
 				
 				
 				% ACBR algorithm
-% 				tic
-% 				[NewCM, classification, precision] = ...
-% 									acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
-% 									forget_option, retention_option, K);
-% 				elapsed_time = toc;
-				[time_retr,time_reuse,time_review,time_retention, precision] = ...
-                        acbrAlgorithm_test(CM ,TestMatrix, use_real_classes, ...
+				tic
+				[NewCM, classification, precision] = ...
+									acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
 									forget_option, retention_option, K);
-				% Quality measurements updated
+% 				[time_retr,time_reuse,time_review,time_retention, precision] = ...
+%                         acbrAlgorithm_test(CM ,TestMatrix, use_real_classes, ...
+% 									forget_option, retention_option, K);
+				elapsed_time = toc;
+                                
+                % Quality measurements updated
 				fprintf('Precision: %f\n',precision);
 				
 				total_time = total_time + elapsed_time;
