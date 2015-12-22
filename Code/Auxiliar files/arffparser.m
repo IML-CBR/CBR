@@ -307,6 +307,9 @@ function out = arffparser(mode, fileName, normalize, inputStruct, relationName, 
             
             % Get the name of the attribute
             strName = textAttr{indx}(indxStart:indxEnd);
+            if strcmp(strName, 'class')
+                a=1;
+            end
             
             % Remove spaces from name
             strName = strName(~isspace(strName));
@@ -403,7 +406,10 @@ function out = arffparser(mode, fileName, normalize, inputStruct, relationName, 
                         tmpStrIndx = commaInds(indx-1) + 1;
                 end
                 
-                if isstrprop(tmpStr(tmpStrIndx), 'alpha') || ...
+                if strcmp(tmpStr(tmpStrIndx),'+') || strcmp(tmpStr(tmpStrIndx),'-')
+                    kindType = 'string';
+                    tmpVal = {};
+                elseif isstrprop(tmpStr(tmpStrIndx), 'alpha') || ...
                         isstrprop(tmpStr(tmpStrIndx), 'punct')
                     kindType = 'string';
                     tmpVal = {};
@@ -517,7 +523,25 @@ function out = arffparser(mode, fileName, normalize, inputStruct, relationName, 
                     tmpVal2 = tmpStr(commaInds(length(commaInds))...
                             + 1 : length(tmpStr));
                     
-                    if strcmp(kindType, 'digit')
+                    if strcmp(tmpVal2,'+') || strcmp(tmpVal2,'-')
+                        % Check and remove the first quote (if any)
+                        if strcmp(tmpVal2(1), '''') || ...
+                                strcmp(tmpVal2(1), '"')
+                            tmpVal2(1) = [];
+                        end
+                        
+                        % Check and remove the last quote (if any)
+                        if strcmp(tmpVal2(length(tmpVal2)), '''') || ...
+                                strcmp(tmpVal2(length(tmpVal2)), '"')
+                            tmpVal2(length(tmpVal2)) = [];
+                        end
+                        
+                        if strcmp(tmpVal2, '?')
+                            tmpVal2 = 'NaN';
+                        end
+                        
+                        tmpVal{indx2} = tmpVal2;
+                    elseif strcmp(kindType, 'digit')
                         
                         % Check for missing values
                         if strcmp(tmpVal2, '?')
@@ -554,7 +578,25 @@ function out = arffparser(mode, fileName, normalize, inputStruct, relationName, 
                     tmpVal2 = tmpStr(commaInds(indx-1) + 1:...
                         commaInds(indx) - 1);
                     
-                    if strcmp(kindType, 'digit')
+                    if strcmp(tmpVal2,'+') || strcmp(tmpVal2,'-')
+                        % Check and remove the first quote (if any)
+                        if strcmp(tmpVal2(1), '''') || ...
+                                strcmp(tmpVal2(1), '"')
+                            tmpVal2(1) = [];
+                        end
+                        
+                        % Check and remove the last quote (if any)
+                        if strcmp(tmpVal2(length(tmpVal2)), '''') || ...
+                                strcmp(tmpVal2(length(tmpVal2)), '"')
+                            tmpVal2(length(tmpVal2)) = [];
+                        end
+                        
+                        if strcmp(tmpVal2, '?')
+                            tmpVal2 = 'NaN';
+                        end
+                        
+                        tmpVal{indx2} = tmpVal2;
+                    elseif strcmp(kindType, 'digit')
                         
                         % Check for missing values
                         if strcmp(tmpVal2, '?')
