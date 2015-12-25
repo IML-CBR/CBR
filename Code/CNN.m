@@ -9,6 +9,7 @@ function [ U_CaseBase, U_labels ] = CNN(TrainMatrix)
         Repeat = 0;
         order = (1:size(CB,1));
         rand_order = order(randperm(length(order)));
+        rand_order = 1:size(CB,1);
         storedCases = [];
         for i=1:length(rand_order)
             x_case = CB(rand_order(i),:);
