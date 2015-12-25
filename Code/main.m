@@ -38,14 +38,10 @@ if generate_data
     save(['../Data/TrainMatrixes_CNN_' dataset_name],'TrainMatrixes_CNN');
     save(['../Data/TrainMatrixes_RNN_' dataset_name],'TrainMatrixes_RNN');
 else
-    TrainMatrixes=load(['../Data/TrainMatrixes_' dataset_name]);
-    TrainMatrixes = TrainMatrixes.TrainMatrixes;
-    TestMatrixes=load(['../Data/TestMatrixes_' dataset_name]);
-    TestMatrixes = TestMatrixes.TestMatrixes;
-    TrainMatrixes_CNN=load(['../Data/TrainMatrixes_CNN_' dataset_name]);
-    TrainMatrixes_CNN = TrainMatrixes_CNN.TrainMatrixes_CNN;
-    TrainMatrixes_RNN=load(['../Data/TrainMatrixes_RNN_' dataset_name]);
-    TrainMatrixes_RNN = TrainMatrixes_RNN.TrainMatrixes_RNN;
+    load(['../Data/TrainMatrixes_' dataset_name]);
+    load(['../Data/TestMatrixes_' dataset_name]);
+    load(['../Data/TrainMatrixes_CNN_' dataset_name]);
+    load(['../Data/TrainMatrixes_RNN_' dataset_name]);
 end
 toc
 
@@ -75,14 +71,11 @@ if generate_best_model
                     CM = struct('CB',{TrainMatrix},'GB0',initial_goodness,'GB',current_goodness);
 
                     % ACBR algorithm
-    % 				tic
                     [NewCM, classification, precision] = ...
                                         acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
                                         forget_option, retention_option, K);
-    % 				elapsed_time = toc
 
                     % Quality measurements updated
-
                     total_accuracy = total_accuracy + precision;
                 end
                 total_accuracy = total_accuracy / 10;
@@ -102,10 +95,9 @@ if generate_best_model
     best_model.k = best_K;
     best_model.forget_option = forget_option;
     best_model.retention_option = retention_option;
-    save(['../Data/best_model_' dataset_name],'best_model');
+    save(['../Data/best_model_' dataset_name],'-struct','best_model');
 else
     best_model = load(['../Data/best_model_' dataset_name]);
-    best_model = best_model.best_model;
     best_K = best_model.k;
     best_forget_option = best_model.forget_option;
     best_retention_option = best_model.retention_option;
@@ -149,6 +141,7 @@ for i=1:10
     total_accuracy_ACBR = total_accuracy_ACBR + precision_ACBR;
     total_size_ACBR = total_size_ACBR + size(NewCM_1.CB,1);
 
+    % CBR algorithm
     tic
     [NewCM_2, classification, precision_CBR] = ...
 			acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
@@ -203,6 +196,7 @@ for i=1:10
     total_accuracy_ACBR = total_accuracy_ACBR + precision_ACBR;
     total_size_ACBR = total_size_ACBR + size(NewCM.CB,1);
     
+    % CBR algorithm
     tic
     [NewCM_2, classification, precision_CBR] = ...
 			acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
@@ -250,6 +244,7 @@ for i=1:10
     total_accuracy_ACBR = total_accuracy_ACBR + precision_ACBR;
     total_size_ACBR = total_size_ACBR + size(NewCM.CB,1);
     
+    % ACBR algorithm
     tic
     [NewCM_2, classification, precision_CBR] = ...
 			acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
@@ -276,3 +271,8 @@ best_K
 
 ACBR_results
 CBR_results
+save(['../Data/ACBR_results_' dataset_name],'ACBR_results');
+save(['../Data/CBR_results_' dataset_name],'CBR_results');
+
+load(['../Data/ACBR_results_' dataset_name]);
+load(['../Data/CBR_results_' dataset_name]);

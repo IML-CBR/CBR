@@ -22,7 +22,7 @@ TrainMatrixes_CNN = cell(1,10);
 TrainMatrixes_RNN = cell(1,10);
 
 tic
-generate_data=true;
+generate_data=false;
 if generate_data
     for i=1:10
         % Load data
@@ -38,14 +38,10 @@ if generate_data
     save(['../Data/TrainMatrixes_CNN_' dataset_name],'TrainMatrixes_CNN');
     save(['../Data/TrainMatrixes_RNN_' dataset_name],'TrainMatrixes_RNN');
 else
-    TrainMatrixes=load(['../Data/TrainMatrixes_' dataset_name]);
-    TrainMatrixes = TrainMatrixes.TrainMatrixes;
-    TestMatrixes=load(['../Data/TestMatrixes_' dataset_name]);
-    TestMatrixes = TestMatrixes.TestMatrixes;
-    TrainMatrixes_CNN=load(['../Data/TrainMatrixes_CNN_' dataset_name]);
-    TrainMatrixes_CNN = TrainMatrixes_CNN.TrainMatrixes_CNN;
-    TrainMatrixes_RNN=load(['../Data/TrainMatrixes_RNN_' dataset_name]);
-    TrainMatrixes_RNN = TrainMatrixes_RNN.TrainMatrixes_RNN;
+    load(['../Data/TrainMatrixes_' dataset_name]);
+    load(['../Data/TestMatrixes_' dataset_name]);
+    load(['../Data/TrainMatrixes_CNN_' dataset_name]);
+    load(['../Data/TrainMatrixes_RNN_' dataset_name]);
 end
 toc
 
@@ -75,14 +71,11 @@ if generate_best_model
                     CM = struct('CB',{TrainMatrix},'GB0',initial_goodness,'GB',current_goodness);
 
                     % ACBR algorithm
-    % 				tic
                     [NewCM, classification, precision] = ...
                                         acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
                                         forget_option, retention_option, K);
-    % 				elapsed_time = toc
 
                     % Quality measurements updated
-
                     total_accuracy = total_accuracy + precision;
                 end
                 total_accuracy = total_accuracy / 10;
@@ -102,7 +95,7 @@ if generate_best_model
     best_model.k = best_K;
     best_model.forget_option = forget_option;
     best_model.retention_option = retention_option;
-    save(['../Data/best_model_' dataset_name],'best_model');
+    save(['../Data/best_model_' dataset_name],'-struct','best_model');
 else
     best_model = load(['../Data/best_model_' dataset_name]);
     best_K = best_model.k;
@@ -146,15 +139,16 @@ for i=1:10
     elapsed_time=toc;
 	total_time_ACBR = total_time_ACBR + elapsed_time;
     total_accuracy_ACBR = total_accuracy_ACBR + precision_ACBR;
-    total_accuracy_CBR = total_accuracy_CBR + precision_CBR;
+    total_size_ACBR = total_size_ACBR + size(NewCM_1.CB,1);
 
+    % CBR algorithm
     tic
     [NewCM_2, classification, precision_CBR] = ...
 			acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
             0, 1, best_K);
     elapsed_time=toc;
     total_time_CBR = total_time_CBR + elapsed_time;
-    total_size_ACBR = total_size_ACBR + size(NewCM.CB,1);
+    total_accuracy_CBR = total_accuracy_CBR + precision_CBR;
     total_size_CBR = total_size_CBR + size(NewCM_2.CB,1);
 end
 total_time_ACBR = total_time_ACBR / 10;
@@ -202,6 +196,7 @@ for i=1:10
     total_accuracy_ACBR = total_accuracy_ACBR + precision_ACBR;
     total_size_ACBR = total_size_ACBR + size(NewCM.CB,1);
     
+    % CBR algorithm
     tic
     [NewCM_2, classification, precision_CBR] = ...
 			acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
@@ -249,6 +244,7 @@ for i=1:10
     total_accuracy_ACBR = total_accuracy_ACBR + precision_ACBR;
     total_size_ACBR = total_size_ACBR + size(NewCM.CB,1);
     
+    % ACBR algorithm
     tic
     [NewCM_2, classification, precision_CBR] = ...
 			acbrAlgorithm(CM ,TestMatrix, use_real_classes, ...
@@ -275,3 +271,46 @@ best_K
 
 ACBR_results
 CBR_results
+save(['../Data/ACBR_results_' dataset_name],'ACBR_results');
+save(['../Data/CBR_results_' dataset_name],'CBR_results');
+
+load(['../Data/ACBR_results_' dataset_name]);
+load(['../Data/CBR_results_' dataset_name]);
+
+aux = [ACBR_results(1,:); CBR_results(1,:); ACBR_results(2,:); CBR_results(2,:); ACBR_results(3,:); CBR_results(3,:)];
+aux = aux(1:4,:);
+
+axis_names = {'ACBR raw data' 'CBR raw data' 'ACBR with CNN' 'CBR with CNN'};
+
+
+acc_aux = aux(:,1);
+figure('name','Accuracy evolution','color','white')
+bar(acc_aux)
+set(gca,'XTickL', axis_names)
+ylim([min(acc_aux)-10 max(acc_aux)+10]);
+
+time_aux = aux(:,2);
+figure('name','Time evolution','color','white')
+bar(time_aux)
+set(gca,'XTickL', axis_names)
+ylim([0 max(time_aux)+2]);
+
+sto_aux = aux(:,3);
+figure('name','Storage evolution','color','white')
+bar(sto_aux)
+set(gca,'XTickL', axis_names)
+ylim([min(sto_aux)-20 max(sto_aux)+20]);
+
+
+axis_names_2 = {' ' 'ACBR raw data' 'CBR raw data' 'ACBR with CNN' 'CBR with CNN' ' '};
+
+acc_aux_2 = [0; acc_aux/max(acc_aux); 0];
+time_aux_2 = [0; time_aux/max(time_aux); 0];
+sto_aux_2 = [0; sto_aux/max(sto_aux); 0];
+figure('name','Global comparison','color','white')
+hold on
+scatter(1:size(acc_aux_2,1),acc_aux_2,'o');
+scatter(1:size(time_aux_2,1),time_aux_2,'*');
+scatter(1:size(sto_aux_2,1),sto_aux_2,'+');
+set(gca,'XTick', 1:6)
+set(gca,'XTickL', axis_names_2)

@@ -53,7 +53,8 @@ function TrainMatrix_reduced = RNN(TrainMatrix, already_reduced, knn)
                 TrainMatrix_aux = TrainMatrix_reduced(indexes,:);
                 K = KNN(TrainMatrix_aux, current_test_instance, 1);
                 elapsed_time = elapsed_time + toc(inside_timer);
-                new_class_1 = cell2mat(K(class_index));
+%                 new_class_1 = cell2mat(K(class_index));
+                new_class_1 = mode(cell2mat(K(:,class_index)));
             else
                 [m,I]=min(distances(j,indexes));
                 [m2,I2]=min(distances(indexes,j));
