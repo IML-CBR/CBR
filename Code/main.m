@@ -9,7 +9,7 @@ cd(fileparts(tmp.Filename));
 
 %% Data loading
 datasets = {'credit-a' 'bal'};
-dataset_name = datasets{1};
+dataset_name = datasets{2};
 
 
 use_real_classes = 1;		% This parameter indicates that the first column of the test matrix
@@ -21,18 +21,17 @@ TestMatrixes = cell(1,10);
 TrainMatrixes_CNN = cell(1,10);
 TrainMatrixes_RNN = cell(1,10);
 
-generate_data=true;
+tic
+generate_data=false;
 if generate_data
     for i=1:10
-        tic
         % Load data
         [TrainMatrixes{i}, TestMatrixes{i}, class_names] = readDataset(dataset_name,i-1);
-        TrainMatrixes{i} = dataset_resizing(TrainMatrixes{i},1.2);
+%         TrainMatrixes{i} = dataset_resizing(TrainMatrixes{i},3);
         [ TrainMatrix_CNN, Labels_CNN ] = CNN(TrainMatrixes{i});%,TrainLabels);
         TrainMatrixes_CNN{i} = [TrainMatrix_CNN Labels_CNN];
         
         TrainMatrixes_RNN{i}=RNN(TrainMatrixes_CNN{i}, 1, 0);
-        toc
     end
     save(['../Data/TrainMatrixes_' dataset_name],'TrainMatrixes');
     save(['../Data/TestMatrixes_' dataset_name],'TestMatrixes');
@@ -40,15 +39,22 @@ if generate_data
     save(['../Data/TrainMatrixes_RNN_' dataset_name],'TrainMatrixes_RNN');
 else
     TrainMatrixes=load(['../Data/TrainMatrixes_' dataset_name]);
+    TrainMatrixes = TrainMatrixes.TrainMatrixes;
     TestMatrixes=load(['../Data/TestMatrixes_' dataset_name]);
+    TestMatrixes = TestMatrixes.TestMatrixes;
     TrainMatrixes_CNN=load(['../Data/TrainMatrixes_CNN_' dataset_name]);
+    TrainMatrixes_CNN = TrainMatrixes_CNN.TrainMatrixes_CNN;
     TrainMatrixes_RNN=load(['../Data/TrainMatrixes_RNN_' dataset_name]);
+    TrainMatrixes_RNN = TrainMatrixes_RNN.TrainMatrixes_RNN;
 end
+toc
 
+ 
 %% ACBR parameters decision
 accuracies = zeros(1,24);
 index = 1;
 best_accuracy = 0;
+tic
 for K = 3:2:7
 	for forget_option = 0:1
 		for retention_option = 1:4
@@ -91,6 +97,7 @@ for K = 3:2:7
 		end
 	end
 end
+toc
 
 %% Global results instantiation
 ACBR_results=zeros(3,3);
@@ -104,6 +111,7 @@ total_time_CBR = 0;
 total_size_ACBR = 0;
 total_size_CBR = 0;
 
+tic
 for i=1:10
     % Load data
 
@@ -149,6 +157,8 @@ total_size_CBR = total_size_CBR / 10;
 ACBR_results(1,:) = [total_accuracy_ACBR total_time_ACBR total_size_ACBR];
 CBR_results(1,:) = [total_accuracy_CBR total_time_CBR total_size_CBR];
 
+toc
+
 
 %% CNN
 total_accuracy_ACBR = 0;
@@ -158,6 +168,7 @@ total_time_CBR = 0;
 total_size_ACBR = 0;
 total_size_CBR = 0;
 
+tic
 for i=1:10
     % Load data
     TrainMatrix = TrainMatrixes_CNN{i};
@@ -200,7 +211,7 @@ total_size_CBR = total_size_CBR / 10;
 
 ACBR_results(2,:) = [total_accuracy_ACBR total_time_ACBR total_size_ACBR];
 CBR_results(2,:) = [total_accuracy_CBR total_time_CBR total_size_CBR];
-
+toc
 
 %% RNN
 total_accuracy_ACBR = 0;
