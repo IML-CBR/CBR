@@ -22,7 +22,6 @@ TestMatrixes = cell(1,10);
 TrainMatrixes_CNN = cell(1,10);
 TrainMatrixes_RNN = cell(1,10);
 
-tic
 generate_data=false;
 if generate_data
 	for i=1:10
@@ -43,7 +42,6 @@ else
     load(['../Data/TrainMatrixes_CNN_' dataset_name]);
     load(['../Data/TrainMatrixes_RNN_' dataset_name]);
 end
-toc
 
  
 %% ACBR parameters decision
@@ -96,6 +94,8 @@ if generate_best_model
     best_model.retention_option = retention_option;
     save(['../Data/best_model_' dataset_name],'-struct','best_model');
 else
+    load(['../Data/best_model_' dataset_name]);
+    
     best_model = load(['../Data/best_model_' dataset_name]);
     best_K = best_model.k;
     best_forget_option = best_model.forget_option;
@@ -114,7 +114,6 @@ total_time_CBR = 0;
 total_size_ACBR = 0;
 total_size_CBR = 0;
 
-raw_data_tic = tic;
 for i=1:10
     % Load data
     TrainMatrix = TrainMatrixes{i};
@@ -159,8 +158,6 @@ total_accuracy_CBR = total_accuracy_CBR / 10;
 total_size_CBR = total_size_CBR / 10;
 CBR_results(1,:) = [total_accuracy_CBR total_time_CBR total_size_CBR];
 
-toc(raw_data_tic)
-
 
 %% CNN
 total_accuracy_ACBR = 0;
@@ -170,7 +167,6 @@ total_time_CBR = 0;
 total_size_ACBR = 0;
 total_size_CBR = 0;
 
-CNN_tic = tic;
 for i=1:10
     % Load data
     TrainMatrix = TrainMatrixes_CNN{i};
@@ -214,7 +210,6 @@ total_accuracy_CBR = total_accuracy_CBR / 10;
 total_size_CBR = total_size_CBR / 10;
 CBR_results(2,:) = [total_accuracy_CBR total_time_CBR total_size_CBR];
 
-toc(CNN_tic)
 
 %% RNN
 total_accuracy_ACBR = 0;
@@ -277,6 +272,13 @@ best_forget_option
 best_retention_option
 best_K
 
+if exist('ACBR_results','var')~=1
+    load(['../Data/ACBR_results_' dataset_name]);
+    load(['../Data/CBR_results_' dataset_name]);
+elseif sum(sum(ACBR_results))==0
+    load(['../Data/ACBR_results_' dataset_name]);
+    load(['../Data/CBR_results_' dataset_name]);
+end
 ACBR_results
 CBR_results
 save(['../Data/ACBR_results_' dataset_name],'ACBR_results');
