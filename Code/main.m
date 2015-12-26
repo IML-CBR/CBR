@@ -9,7 +9,7 @@ cd(fileparts(tmp.Filename));
 
 %% Data loading
 datasets = {'credit-a' 'bal'};
-dataset_name = datasets{2};
+dataset_name = datasets{1};
 
 
 use_real_classes = 1;		% This parameter indicates that the first column of the test matrix
@@ -317,3 +317,38 @@ scatter(1:size(time_aux_2,1),time_aux_2,'*');
 scatter(1:size(sto_aux_2,1),sto_aux_2,'+');
 set(gca,'XTick', 1:6)
 set(gca,'XTickL', axis_names_2)
+
+
+load(['../Data/ACBR_results_' dataset_name]);
+load(['../Data/CBR_results_' dataset_name]);
+
+%% Friedman Statistics Accuracy
+AccRankMat = [1,2,3,4;2,1,3,4];
+numDatasets = 2;
+numAlgorithms = 4;
+[AcFf,AccAvgRankMat] = FriedmanF( numDatasets, numAlgorithms, AccRankMat )
+%% Nemenyi Statistics Accuracy
+acalpha = 0.05;
+Ri = max(AccAvgRankMat);
+Rj = min(AccAvgRankMat);
+if(Nemenyi(acalpha, Ri, Rj, numAlgorithms, numDatasets))
+    NemenyiResult = 1;
+else
+    acalpha = 0.1
+    NemenyiResult = Nemenyi(acalpha, Ri, Rj, numAlgorithms, numDatasets)
+end
+%% Friedman Statistics Storage
+StRankMat = [2,4,1,3;2,4,1,3];
+numDatasets = 2;
+numAlgorithms = 4;
+[StFf,StAvgRankMat] = FriedmanF( numDatasets, numAlgorithms, StRankMat )
+%% Nemenyi Statistics Storage
+stalpha = 0.05;
+Ri = max(StAvgRankMat);
+Rj = min(StAvgRankMat);
+if(Nemenyi(stalpha, Ri, Rj, numAlgorithms, numDatasets))
+    NemenyiResult = 1;
+else
+    stalpha = 0.1
+    NemenyiResult = Nemenyi(stalpha, Ri, Rj, numAlgorithms, numDatasets)
+end
