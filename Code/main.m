@@ -221,6 +221,10 @@ toc(CNN_tic)
 %% RNN
 total_accuracy_ACBR = 0;
 total_accuracy_CBR = 0;
+total_time_ACBR = 0;
+total_time_CBR = 0;
+total_size_ACBR = 0;
+total_size_CBR = 0;
 for i=1:10
     % Load data
     TrainMatrix = TrainMatrixes_RNN{i};
@@ -274,5 +278,42 @@ CBR_results
 save(['../Data/ACBR_results_' dataset_name],'ACBR_results');
 save(['../Data/CBR_results_' dataset_name],'CBR_results');
 
-load(['../Data/ACBR_results_' dataset_name]);
-load(['../Data/CBR_results_' dataset_name]);
+
+%% Plots
+
+aux = [ACBR_results(1,:); CBR_results(1,:); ACBR_results(2,:); CBR_results(2,:); ACBR_results(3,:); CBR_results(3,:)];
+aux = aux(1:4,:);
+
+axis_names = {'ACBR raw data' 'CBR raw data' 'ACBR with CNN' 'CBR with CNN'};
+
+acc_aux = aux(:,1);
+figure('name','Accuracy evolution','color','white')
+bar(acc_aux)
+set(gca,'XTickL', axis_names)
+ylim([min(acc_aux)-10 max(acc_aux)+10]);
+
+time_aux = aux(:,2);
+figure('name','Time evolution','color','white')
+bar(time_aux)
+set(gca,'XTickL', axis_names)
+ylim([0 max(time_aux)+2]);
+
+sto_aux = aux(:,3);
+figure('name','Storage evolution','color','white')
+bar(sto_aux)
+set(gca,'XTickL', axis_names)
+ylim([min(sto_aux)-20 max(sto_aux)+20]);
+
+
+axis_names_2 = {' ' 'ACBR raw data' 'CBR raw data' 'ACBR with CNN' 'CBR with CNN' ' '};
+
+acc_aux_2 = [0; acc_aux/max(acc_aux); 0];
+time_aux_2 = [0; time_aux/max(time_aux); 0];
+sto_aux_2 = [0; sto_aux/max(sto_aux); 0];
+figure('name','Global comparison','color','white')
+hold on
+scatter(1:size(acc_aux_2,1),acc_aux_2,'o');
+scatter(1:size(time_aux_2,1),time_aux_2,'*');
+scatter(1:size(sto_aux_2,1),sto_aux_2,'+');
+set(gca,'XTick', 1:6)
+set(gca,'XTickL', axis_names_2)
