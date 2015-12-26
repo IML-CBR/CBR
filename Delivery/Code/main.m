@@ -6,15 +6,16 @@ clc;
 %% Move to working directory
 tmp = matlab.desktop.editor.getActive;
 cd(fileparts(tmp.Filename));
+addpath([fileparts(tmp.Filename) '\Auxiliar files']);
 
-%% Data loading
+%% Dataset choice
 datasets = {'credit-a' 'bal'};
 dataset_name = datasets{2};
 
 
+%% Data loading
 use_real_classes = 1;		% This parameter indicates that the first column of the test matrix
 							% stores the real class for every instance
-
 
 TrainMatrixes = cell(1,10);
 TestMatrixes = cell(1,10);
@@ -24,15 +25,14 @@ TrainMatrixes_RNN = cell(1,10);
 tic
 generate_data=false;
 if generate_data
-    for i=1:10
+	for i=1:10
         % Load data
         [TrainMatrixes{i}, TestMatrixes{i}, class_names] = readDataset(dataset_name,i-1);
-%         TrainMatrixes{i} = dataset_resizing(TrainMatrixes{i},3);
         [ TrainMatrix_CNN, Labels_CNN ] = CNN(TrainMatrixes{i});%,TrainLabels);
         TrainMatrixes_CNN{i} = [TrainMatrix_CNN Labels_CNN];
-        
+
         TrainMatrixes_RNN{i}=RNN(TrainMatrixes_CNN{i}, 1, 0);
-    end
+	end
     save(['../Data/TrainMatrixes_' dataset_name],'TrainMatrixes');
     save(['../Data/TestMatrixes_' dataset_name],'TestMatrixes');
     save(['../Data/TrainMatrixes_CNN_' dataset_name],'TrainMatrixes_CNN');
@@ -52,7 +52,6 @@ if generate_best_model
     accuracies = zeros(1,24);
     index = 1;
     best_accuracy = 0;
-    tic
     for K = 3:2:7
         for forget_option = 0:1
             for retention_option = 1:4
@@ -102,7 +101,6 @@ else
     best_forget_option = best_model.forget_option;
     best_retention_option = best_model.retention_option;
 end
-toc
 
 %% Global results instantiation
 ACBR_results=zeros(3,3);
@@ -221,6 +219,10 @@ toc(CNN_tic)
 %% RNN
 total_accuracy_ACBR = 0;
 total_accuracy_CBR = 0;
+total_time_ACBR = 0;
+total_time_CBR = 0;
+total_size_ACBR = 0;
+total_size_CBR = 0;
 for i=1:10
     % Load data
     TrainMatrix = TrainMatrixes_RNN{i};
@@ -265,6 +267,12 @@ total_size_CBR = total_size_CBR / 10;
 CBR_results(3,:) = [total_accuracy_CBR total_time_CBR total_size_CBR];
 
 %% Results summarizing
+if exist('best_forget_option','var')~=1
+    best_model = load(['../Data/best_model_' dataset_name]);
+    best_K = best_model.k;
+    best_forget_option = best_model.forget_option;
+    best_retention_option = best_model.retention_option;
+end
 best_forget_option
 best_retention_option
 best_K
@@ -274,6 +282,8 @@ CBR_results
 save(['../Data/ACBR_results_' dataset_name],'ACBR_results');
 save(['../Data/CBR_results_' dataset_name],'CBR_results');
 
+
+%% Plots
 load(['../Data/ACBR_results_' dataset_name]);
 load(['../Data/CBR_results_' dataset_name]);
 
@@ -281,7 +291,6 @@ aux = [ACBR_results(1,:); CBR_results(1,:); ACBR_results(2,:); CBR_results(2,:);
 aux = aux(1:4,:);
 
 axis_names = {'ACBR raw data' 'CBR raw data' 'ACBR with CNN' 'CBR with CNN'};
-
 
 acc_aux = aux(:,1);
 figure('name','Accuracy evolution','color','white')
@@ -314,3 +323,38 @@ scatter(1:size(time_aux_2,1),time_aux_2,'*');
 scatter(1:size(sto_aux_2,1),sto_aux_2,'+');
 set(gca,'XTick', 1:6)
 set(gca,'XTickL', axis_names_2)
+legend('Accuracy', 'Time', 'Storage');
+
+load(['../Data/ACBR_results_' dataset_name]);
+load(['../Data/CBR_results_' dataset_name]);
+
+%% Friedman Statistics Accuracy
+AccRankMat = [1,2,3,4;2,1,3,4];
+numDatasets = 2;
+numAlgorithms = 4;
+[AcFf,AccAvgRankMat] = FriedmanF( numDatasets, numAlgorithms, AccRankMat )
+%% Nemenyi Statistics Accuracy
+acalpha = 0.05;
+Ri = max(AccAvgRankMat);
+Rj = min(AccAvgRankMat);
+if(Nemenyi(acalpha, Ri, Rj, numAlgorithms, numDatasets))
+    NemenyiResult = 1;
+else
+    acalpha = 0.1
+    NemenyiResult = Nemenyi(acalpha, Ri, Rj, numAlgorithms, numDatasets)
+end
+%% Friedman Statistics Storage
+StRankMat = [2,4,1,3;2,4,1,3];
+numDatasets = 2;
+numAlgorithms = 4;
+[StFf,StAvgRankMat] = FriedmanF( numDatasets, numAlgorithms, StRankMat )
+%% Nemenyi Statistics Storage
+stalpha = 0.05;
+Ri = max(StAvgRankMat);
+Rj = min(StAvgRankMat);
+if(Nemenyi(stalpha, Ri, Rj, numAlgorithms, numDatasets))
+    NemenyiResult = 1;
+else
+    stalpha = 0.1
+    NemenyiResult = Nemenyi(stalpha, Ri, Rj, numAlgorithms, numDatasets)
+end

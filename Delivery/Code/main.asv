@@ -6,6 +6,7 @@ clc;
 %% Move to working directory
 tmp = matlab.desktop.editor.getActive;
 cd(fileparts(tmp.Filename));
+addpath([fileparts(tmp.Filename) '\Auxiliar files']);
 
 %% Data loading
 datasets = {'credit-a' 'bal'};
@@ -15,7 +16,6 @@ dataset_name = datasets{2};
 use_real_classes = 1;		% This parameter indicates that the first column of the test matrix
 							% stores the real class for every instance
 
-
 TrainMatrixes = cell(1,10);
 TestMatrixes = cell(1,10);
 TrainMatrixes_CNN = cell(1,10);
@@ -24,15 +24,14 @@ TrainMatrixes_RNN = cell(1,10);
 tic
 generate_data=false;
 if generate_data
-    for i=1:10
+	for i=1:10
         % Load data
         [TrainMatrixes{i}, TestMatrixes{i}, class_names] = readDataset(dataset_name,i-1);
-%         TrainMatrixes{i} = dataset_resizing(TrainMatrixes{i},3);
         [ TrainMatrix_CNN, Labels_CNN ] = CNN(TrainMatrixes{i});%,TrainLabels);
         TrainMatrixes_CNN{i} = [TrainMatrix_CNN Labels_CNN];
-        
+
         TrainMatrixes_RNN{i}=RNN(TrainMatrixes_CNN{i}, 1, 0);
-    end
+	end
     save(['../Data/TrainMatrixes_' dataset_name],'TrainMatrixes');
     save(['../Data/TestMatrixes_' dataset_name],'TestMatrixes');
     save(['../Data/TrainMatrixes_CNN_' dataset_name],'TrainMatrixes_CNN');
@@ -52,7 +51,6 @@ if generate_best_model
     accuracies = zeros(1,24);
     index = 1;
     best_accuracy = 0;
-    tic
     for K = 3:2:7
         for forget_option = 0:1
             for retention_option = 1:4
@@ -102,7 +100,6 @@ else
     best_forget_option = best_model.forget_option;
     best_retention_option = best_model.retention_option;
 end
-toc
 
 %% Global results instantiation
 ACBR_results=zeros(3,3);
@@ -269,6 +266,11 @@ total_size_CBR = total_size_CBR / 10;
 CBR_results(3,:) = [total_accuracy_CBR total_time_CBR total_size_CBR];
 
 %% Results summarizing
+if exist('best_forget_option','var')~=1
+    best_forget_option
+    best_retention_option
+    best_K
+end
 best_forget_option
 best_retention_option
 best_K
@@ -280,6 +282,8 @@ save(['../Data/CBR_results_' dataset_name],'CBR_results');
 
 
 %% Plots
+datasets = {'credit-a' 'bal'};
+dataset_name = datasets{2};
 
 load(['../Data/ACBR_results_' dataset_name]);
 load(['../Data/CBR_results_' dataset_name]);
