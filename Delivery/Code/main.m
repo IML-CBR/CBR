@@ -10,7 +10,7 @@ addpath([fileparts(tmp.Filename) '\Auxiliar files']);
 
 %% Dataset choice
 datasets = {'credit-a' 'bal'};
-dataset_name = datasets{2};
+dataset_name = datasets{1};
 
 
 %% Data loading
