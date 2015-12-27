@@ -9,7 +9,7 @@ cd(fileparts(tmp.Filename));
 
 %% Data loading
 datasets = {'credit-a' 'bal'};
-dataset_name = datasets{2};
+dataset_name = datasets{1};
 
 
 use_real_classes = 1;		% This parameter indicates that the first column of the test matrix
@@ -47,7 +47,7 @@ toc
 
  
 %% ACBR parameters decision
-generate_best_model = false;
+generate_best_model = true;
 if generate_best_model
     accuracies = zeros(1,24);
     index = 1;
